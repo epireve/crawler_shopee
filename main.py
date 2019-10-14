@@ -1,6 +1,6 @@
-import os 
+import os
 import sys
-import pickle 
+import pickle
 import logging
 import datetime
 from env import *
@@ -32,7 +32,7 @@ class Driver:
         chrome_options = Options()
         if hide:
             chrome_options.add_argument('--headless')
-            chrome_options.add_argument('--start-maximized') 
+            chrome_options.add_argument('--start-maximized')
             chrome_options.add_argument('disable-infobars')
             chrome_options.add_argument('--disable-extensions')
             chrome_options.add_argument('--no-sandbox')
@@ -56,12 +56,14 @@ class Crawler(Driver):
         super().__init__(1200,800,hide)
     def checkPopModal(self):
         try:
+            # WebDriverWait(self.driver, 5)
+            # self.driver.find_element_by_css_selector(".shopee-button-outline--primary-reverse")[0].click()
             WebDriverWait(self.driver, 5).until( EC.presence_of_element_located((By.CSS_SELECTOR, ".shopee-popup__close-btn")))
             pop = self.driver.find_element_by_css_selector(".shopee-popup__close-btn")
             pop.click()
-            self.logging.info("pop modal close")
+            self.logging.info("Pop modal close")
         except Exception as e:
-            self.logging.info("pop modal not found:"+repr(e))
+            self.logging.info("Pop modal not found: "+repr(e))
             pass
     def checkLogin(self):
         try:
@@ -83,10 +85,10 @@ class Crawler(Driver):
     def loginByPass(self):
         try:
             # click to show login modal
-            login_button = self.driver.find_elements_by_css_selector(".navbar__link--account")[1].click()
+            login_button = self.driver.find_elements_by_css_selector(".navbar__link--account")[1].click()#.perform()
             WebDriverWait(self.driver, 5).until( EC.presence_of_element_located((By.CSS_SELECTOR, ".shopee-modal__content")) )
         except Exception as e:
-            self.logging.error("Login Modal not showing"+repr(e))
+            self.logging.error("Login Modal not showing :"+repr(e))
             self.close()
             sys.exit(0)
         try:
@@ -125,27 +127,27 @@ class Crawler(Driver):
     def clickCoin(self):
         try:
             # wait for page loading
-            self.getRequest("https://shopee.tw/shopee-coins-internal/?scenario=1")
+            self.getRequest("https://shopee.com.my/shopee-coins-internal/?scenario=1")
             sleep(5)
             WebDriverWait(self.driver, 5).until( EC.presence_of_element_located((By.CSS_SELECTOR, ".check-box")))
             # get information
             check_box = self.driver.find_element_by_css_selector(".check-box")
-            coinNow = check_box.find_element_by_css_selector(".total-coins") 
+            coinNow = check_box.find_element_by_css_selector(".total-coins")
             coinGet = check_box.find_elements_by_css_selector(".capitalize")
             if len(coinGet) is 0:
                 # Already click
                 self.logging.info("Already archeive shopee coin today")
             else:
                 #show before information
-                self.logging.info("Current shopee coin：" + coinNow.text + " $，" + coinGet[0].text)
+                self.logging.info("Current shopee coin：" + coinNow.text + " coins，" + coinGet[0].text)
                 #click to get shopee coin
                 coinGet[0].click()
             #wait for already information display login-check-btni
             sleep(3)
             #show after information
-            coinNow = self.driver.find_element_by_css_selector(".check-box .total-coins") 
+            coinNow = self.driver.find_element_by_css_selector(".check-box .total-coins")
             coinAlready = self.driver.find_element_by_css_selector(".check-box .top-btn.Regular")
-            self.logging.info("Current shopee coin：" + coinNow.text + " $，" + coinAlready.text)
+            self.logging.info("Current shopee coin：" + coinNow.text + " coins，" + coinAlready.text)
         except Exception as e:
             self.logging.error(repr(e))
             self.close()
@@ -154,7 +156,7 @@ class Crawler(Driver):
         self.logging.info("Program exit")
 if __name__ == "__main__":
     a = Crawler()
-    a.getRequest("https://shopee.tw")
+    a.getRequest("https://shopee.com.my")
     a.checkPopModal()
     #Use cookie to login
     a.loginByCookie(cookie_name)
@@ -166,7 +168,7 @@ if __name__ == "__main__":
             #Login failed
             a.close()
             sys.exit(0)
-    #After login, Go to coin page 
+    #After login, Go to coin page
     a.saveCookie(cookie_name)
     a.clickCoin()
     a.close()

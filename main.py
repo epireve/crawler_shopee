@@ -51,13 +51,13 @@ class Driver:
                 self.driver.add_cookie(cookie)
     def getRequest(self, url):
         self.driver.get(url)
+        WebDriverWait(self.driver, 5)
+        self.driver.find_element_by_tag_name('body').send_keys(Keys.ESCAPE)
 class Crawler(Driver):
     def __init__(self, hide = True):
         super().__init__(1200,800,hide)
     def checkPopModal(self):
         try:
-            # WebDriverWait(self.driver, 5)
-            # self.driver.find_element_by_css_selector(".shopee-button-outline--primary-reverse")[0].click()
             WebDriverWait(self.driver, 5).until( EC.presence_of_element_located((By.CSS_SELECTOR, ".shopee-popup__close-btn")))
             pop = self.driver.find_element_by_css_selector(".shopee-popup__close-btn")
             pop.click()

@@ -3,7 +3,7 @@
 
 Shopee coin getter is a script to collect daily shopee coins.
 
-![alt text](https://raw.githubusercontent.com/charlie0227/crawler_shopee/master/readme/overall-2.png)
+![Login](https://raw.githubusercontent.com/epireve/crawler_shopee/master/readme/overall-2.png)
 ## dependencies
     python==3.6
     selenium==3.8.0
@@ -12,7 +12,7 @@ Shopee coin getter is a script to collect daily shopee coins.
  [Docker](https://www.docker.com)
 
 ## Getting Started
-    git clone https://github.com/charlie0227/crawler_shopee.git
+    git clone https://github.com/charlie27/crawler_shopee.git
     cd crawler_shopee
     cp env.py.sample env.py
 

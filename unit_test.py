@@ -3,7 +3,7 @@ from main import *
 class TestStringMethods(unittest.TestCase):
     def setUp(self):
         self.a = Crawler()
-        self.a.getRequest("https://shopee.tw")
+        self.a.getRequest("https://shopee.com.my")
     def tearDown(self):
         self.a.close()
     def test_login_button(self):
@@ -48,7 +48,7 @@ class TestStringMethods(unittest.TestCase):
                 #Login failed
                 self.a.close()
                 sys.exit(0)
-        #After login, Go to coin page 
+        #After login, Go to coin page
         self.a.saveCookie(cookie_name)
         self.clickCoin()
 if __name__ == '__main__':
